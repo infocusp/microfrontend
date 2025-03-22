@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React App Without Babel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #warrior-root {
+      width: 80%;
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id='warrior-root'></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script type="module" src="warrior-scripts.js"></script>
+  <script type="module" src="Warrior.js"></script>
+  <script type="module">
+    import { Warrior } from "./Warrior.js";
+    const warriorScript = document.createElement('script');
+    warriorScript.src = 'warrior-scripts.js';
+    warriorScript.type = 'text/javascript';
+    document.head.appendChild(warriorScript);
+    warriorScript.onload = function() {
+      // render once dependencies are loaded.
+      ReactDOM.render(React.createElement(Warrior), document.getElementById('warrior-root'));
+    };
+  </script>
+</body>
+</html>
