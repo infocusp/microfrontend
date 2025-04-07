@@ -1,26 +1,28 @@
-const App = () => {
-  return React.createElement(
-      'div',
-      { className: 'container' },
-      React.createElement('div', { className: 'header' },
-          React.createElement('h1', null, 'Micro-Frontend Base Application'),
-          React.createElement('p', null, 'Hosting multiple independent React components')
-      ),
-      React.createElement('div', { className: 'microfrontends' },
-          React.createElement('div', { className: 'module', id: 'warrior-root'}),
-          React.createElement('div', { className: 'module', id: 'gladiator-root'})
-      )
+const createElement = React.createElement;
+
+const Header = () =>
+  createElement("div", { className: "header" }, 
+    createElement("h1", null, "Micro-Frontend Base Application"), 
+    createElement("p", null, "Hosting multiple independent React components")
   );
+
+const MicroFrontends = () =>
+  createElement("div", { className: "microfrontends" },
+    createElement("div", { className: "module", id: "warrior-root" }),
+    createElement("div", { className: "module", id: "gladiator-root" })
+  );
+
+const App = () => createElement("div", { className: "container" }, createElement(Header), createElement(MicroFrontends));
+
+ReactDOM.render(createElement(App), document.getElementById("root"));
+
+// Dynamically import the micro-frontends and render them
+const renderMicroFrontend = (modulePath, elementId) => {
+  import(modulePath).then(module => {
+    const Component = module[Object.keys(module)[0]]; // Assumes default or named export
+    ReactDOM.render(createElement(Component), document.getElementById(elementId));
+  });
 };
-ReactDOM.render(React.createElement(App), document.getElementById('root'));
 
-// Dynamically import the micro-frontends (Gladiator and Warrior) and render them in their respective divs
-import('./Warrior/Warrior.js').then(module => {
-  const Warrior = module.Warrior;
-  ReactDOM.render(React.createElement(Warrior), document.getElementById('warrior-root'));
-});
-
-import('./Gladiator/Gladiator.js').then(module => {
-  const Gladiator = module.Gladiator;
-  ReactDOM.render(React.createElement(Gladiator), document.getElementById('gladiator-root'));
-});
+renderMicroFrontend('./Warrior/Warrior.js', 'warrior-root');
+renderMicroFrontend('./Gladiator/Gladiator.js', 'gladiator-root');

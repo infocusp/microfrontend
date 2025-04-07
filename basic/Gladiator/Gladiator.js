@@ -1,3 +1,3 @@
-export const Gladiator = () => {
-    return React.createElement('div', null, React.createElement('h1', null, 'React Gladiator!'));
-};
+const createElement = React.createElement;
+export const Gladiator = () =>
+ createElement("div", null, createElement("h1", null, "React Gladiator!"));
